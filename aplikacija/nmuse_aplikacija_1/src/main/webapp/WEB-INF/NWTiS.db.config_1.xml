@@ -1,0 +1,12 @@
+<properties>
+    <comment>NWTIS konfiguracija</comment>
+    <entry key="server.database">jdbc:derby://localhost:1527/</entry>
+    <entry key="admin.username">nmuse</entry>
+    <entry key="admin.password">nmuse</entry>
+    <entry key="admin.database">nwtis_nmuse_bp_1</entry>
+    <entry key="user.username">nmuse</entry>
+    <entry key="user.password">nmuse</entry>
+    <entry key="user.database">nwtis_nmuse_bp_1</entry>
+    <entry key="jdbc.mysql">com.mysql.jdbc.Driver</entry>
+    <entry key="jdbc.derby">org.apache.derby.jdbc.ClientDriver</entry>
+</properties>

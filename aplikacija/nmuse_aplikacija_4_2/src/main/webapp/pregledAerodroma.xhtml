@@ -1,0 +1,422 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Pregled aerodroma</title>
+
+    </h:head>
+    <h:body>
+        <h1>Pregled aerodroma</h1>
+        <ul>
+            <li><h:link value="Izbornik" outcome="faces/izbornik.xhtml"/></li>
+        </ul>
+
+        <h:form>
+            <p:outputLabel value="Odaberi aerodrom:"/>
+            <p:selectOneMenu id="myairports" value="#{pregledAerodroma.odabranAerodrom}" style="width:500px">
+                
+                <f:selectItems value="#{pregledAerodroma.mojiAerodromi}" var="a"
+                               itemLabel="#{a.icao} - #{a.naziv}" itemValue="#{a.icao}"/>
+            </p:selectOneMenu>
+            <br/>
+            <p:outputLabel for="basic" value="Odaberi datum: "/>
+            <p:datePicker id="basic" pattern="dd.MM.yyyy" value="#{pregledAerodroma.datumAerodrom}" />
+            <br/>
+            <p:commandButton id="gumbLetovi" 
+                             value="Prikaži letove"
+                             action="#{pregledAerodroma.dohvatiLetove}"
+                             update="tablicaLetoviAerodroma" 
+                             ajax="true">
+            </p:commandButton>
+            <br/>
+            <p:commandButton id="gumbMeteoDani" 
+                             value="Prikaži meteo podatke prema danu"
+                             action="#{pregledAerodroma.dohvatiMeteoDan}"
+                             update="tablicaMeteoDana" 
+                             ajax="true">
+            </p:commandButton>
+            <br/>
+
+            <p:dataTable id="tablicaLetoviAerodroma"
+                         var="a" 
+                         value="#{pregledAerodroma.letoviAviona}" 
+                         rows="10"
+                         paginator="true" 
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                         rowsPerPageTemplate="5,10,{ShowAll|'All'}"
+                         resizableColumns="true" 
+                         resizeMode="expand" 
+                         showGridlines="true">
+
+                <p:column headerText="icao24">
+                    <h:outputText value="#{a.icao24}" />
+                </p:column>
+
+                <p:column headerText="firstSeen">
+                    <h:outputText value="#{a.firstSeen}" />
+                </p:column>
+
+                <p:column headerText="estDepartureAirport">
+                    <h:outputText value="#{a.estDepartureAirport}" />
+                </p:column>
+
+                <p:column headerText="lastSeen">
+                    <h:outputText value="#{a.lastSeen}" />
+                </p:column>
+
+                <p:column headerText="estArrivalAirport">
+                    <h:outputText value="#{a.estArrivalAirport}" />
+                </p:column>
+
+                <p:column headerText="estDepartureAirportHorizDistance">
+                    <h:outputText value="#{a.estDepartureAirportHorizDistance}" />
+                </p:column>
+
+                <p:column headerText="estDepartureAirportVertDistance">
+                    <h:outputText value="#{a.estDepartureAirportVertDistance}" />
+                </p:column>
+
+                <p:column headerText="estArrivalAirportHorizDistance">
+                    <h:outputText value="#{a.estArrivalAirportHorizDistance}" />
+                </p:column>
+
+                <p:column headerText="estArrivalAirportVertDistance">
+                    <h:outputText value="#{a.estArrivalAirportVertDistance}" />
+                </p:column>
+
+                <p:column headerText="departureAirportCandidatesCount">
+                    <h:outputText value="#{a.departureAirportCandidatesCount}" />
+                </p:column>
+
+                <p:column headerText="arrivalAirportCandidatesCount">
+                    <h:outputText value="#{a.arrivalAirportCandidatesCount}" />
+                </p:column>
+            </p:dataTable>
+            <br/>
+            <p:dataTable id="tablicaMeteoDana"
+                         var="m" 
+                         value="#{pregledAerodroma.meteoPodaciDatum}" 
+                         rows="10"
+                         paginator="true" 
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                         rowsPerPageTemplate="5,10,{ShowAll|'All'}"
+                         resizableColumns="true" 
+                         resizeMode="expand" 
+                         showGridlines="true">
+
+                <p:column headerText="ident">
+                    <h:outputText value="#{m.ident}" />
+                </p:column>
+
+                <p:column headerText="dt">
+                    <h:outputText value="#{m.dt}" />
+                </p:column>
+
+                <p:column headerText="coordLon">
+                    <h:outputText value="#{m.coordLon}" />
+                </p:column>
+
+                <p:column headerText="coordLat">
+                    <h:outputText value="#{m.coordLat}" />
+                </p:column>
+
+                <p:column headerText="weatherId">
+                    <h:outputText value="#{m.weatherId}" />
+                </p:column>
+
+                <p:column headerText="weatherMain">
+                    <h:outputText value="#{m.weatherMain}" />
+                </p:column>
+
+                <p:column headerText="weatherDescription">
+                    <h:outputText value="#{m.weatherDescription}" />
+                </p:column>
+
+                <p:column headerText="base">
+                    <h:outputText value="#{m.base}" />
+                </p:column>
+
+                <p:column headerText="mainTemp">
+                    <h:outputText value="#{m.mainTemp}" />
+                </p:column>
+
+                <p:column headerText="mainFeels_like">
+                    <h:outputText value="#{m.mainFeels_like}" />
+                </p:column>
+
+                <p:column headerText="mainPressure">
+                    <h:outputText value="#{m.mainPressure}" />
+                </p:column>
+
+                <p:column headerText="mainHumidity">
+                    <h:outputText value="#{m.mainHumidity}" />
+                </p:column>
+
+                <p:column headerText="mainTemp_min">
+                    <h:outputText value="#{m.mainTemp_min}" />
+                </p:column>
+
+                <p:column headerText="mainTemp_max">
+                    <h:outputText value="#{m.mainTemp_max}" />
+                </p:column>
+
+                <p:column headerText="mainSea_level">
+                    <h:outputText value="#{m.mainSea_level}" />
+                </p:column>
+
+                <p:column headerText="mainGrnd_level">
+                    <h:outputText value="#{m.mainGrnd_level}" />
+                </p:column>
+
+                <p:column headerText="visibility">
+                    <h:outputText value="#{m.visibility}" />
+                </p:column>
+
+                <p:column headerText="windSpeed">
+                    <h:outputText value="#{m.windSpeed}" />
+                </p:column>
+
+                <p:column headerText="windDeg">
+                    <h:outputText value="#{m.windDeg}" />
+                </p:column>
+
+                <p:column headerText="windGust">
+                    <h:outputText value="#{m.windGust}" />
+                </p:column>
+
+                <p:column headerText="cloudsAll">
+                    <h:outputText value="#{m.cloudsAll}" />
+                </p:column>
+
+                <p:column headerText="rain1h">
+                    <h:outputText value="#{m.rain1h}" />
+                </p:column>
+
+                <p:column headerText="rain3h">
+                    <h:outputText value="#{m.rain3h}" />
+                </p:column>
+
+                <p:column headerText="snow1h">
+                    <h:outputText value="#{m.snow1h}" />
+                </p:column>
+
+                <p:column headerText="snow3h">
+                    <h:outputText value="#{m.snow3h}" />
+                </p:column>
+
+                <p:column headerText="sysType">
+                    <h:outputText value="#{m.sysType}" />
+                </p:column>
+
+                <p:column headerText="sysId">
+                    <h:outputText value="#{m.sysId}" />
+                </p:column>
+
+                <p:column headerText="sysMessage">
+                    <h:outputText value="#{m.sysMessage}" />
+                </p:column>
+
+                <p:column headerText="sysCountry">
+                    <h:outputText value="#{m.sysCountry}" />
+                </p:column>
+
+                <p:column headerText="sysSunrise">
+                    <h:outputText value="#{m.sysSunrise}" />
+                </p:column>
+
+                <p:column headerText="sysSunset">
+                    <h:outputText value="#{m.sysSunset}" />
+                </p:column>
+
+                <p:column headerText="timezone">
+                    <h:outputText value="#{m.timezone}" />
+                </p:column>
+
+                <p:column headerText="cityId">
+                    <h:outputText value="#{m.cityId}" />
+                </p:column>
+
+                <p:column headerText="cityName">
+                    <h:outputText value="#{m.cityName}" />
+                </p:column>
+
+                <p:column headerText="cod">
+                    <h:outputText value="#{m.cod}" />
+                </p:column>
+            </p:dataTable>
+            <br/>
+            <p:outputLabel for="time" value="Odaberi datum i vrijeme:"/>
+            <p:datePicker id="time" pattern="dd.MM.yyyy HH:mm:ss" value="#{pregledAerodroma.datumVrijeme}" showTime="true"/>
+            <br/>
+
+            <p:commandButton id="gumbMeteoVrijeme" 
+                             value="Prikaži meteo podatke prema vremenu"
+                             action="#{pregledAerodroma.dohvatiMeteoVrijeme}"
+                             update="tablicaMeteoVrijeme" 
+                             ajax="true">
+            </p:commandButton>
+            <br/>
+            <p:dataTable id="tablicaMeteoVrijeme"
+                         var="m" 
+                         value="#{pregledAerodroma.meteoPodaciVrijeme}" 
+                         rows="10"
+                         paginator="true" 
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                         rowsPerPageTemplate="5,10,{ShowAll|'All'}"
+                         resizableColumns="true" 
+                         resizeMode="expand" 
+                         showGridlines="true">
+
+                <p:column headerText="ident">
+                    <h:outputText value="#{m.ident}" />
+                </p:column>
+
+                <p:column headerText="dt">
+                    <h:outputText value="#{m.dt}" />
+                </p:column>
+
+                <p:column headerText="coordLon">
+                    <h:outputText value="#{m.coordLon}" />
+                </p:column>
+
+                <p:column headerText="coordLat">
+                    <h:outputText value="#{m.coordLat}" />
+                </p:column>
+
+                <p:column headerText="weatherId">
+                    <h:outputText value="#{m.weatherId}" />
+                </p:column>
+
+                <p:column headerText="weatherMain">
+                    <h:outputText value="#{m.weatherMain}" />
+                </p:column>
+
+                <p:column headerText="weatherDescription">
+                    <h:outputText value="#{m.weatherDescription}" />
+                </p:column>
+
+                <p:column headerText="base">
+                    <h:outputText value="#{m.base}" />
+                </p:column>
+
+                <p:column headerText="mainTemp">
+                    <h:outputText value="#{m.mainTemp}" />
+                </p:column>
+
+                <p:column headerText="mainFeels_like">
+                    <h:outputText value="#{m.mainFeels_like}" />
+                </p:column>
+
+                <p:column headerText="mainPressure">
+                    <h:outputText value="#{m.mainPressure}" />
+                </p:column>
+
+                <p:column headerText="mainHumidity">
+                    <h:outputText value="#{m.mainHumidity}" />
+                </p:column>
+
+                <p:column headerText="mainTemp_min">
+                    <h:outputText value="#{m.mainTemp_min}" />
+                </p:column>
+
+                <p:column headerText="mainTemp_max">
+                    <h:outputText value="#{m.mainTemp_max}" />
+                </p:column>
+
+                <p:column headerText="mainSea_level">
+                    <h:outputText value="#{m.mainSea_level}" />
+                </p:column>
+
+                <p:column headerText="mainGrnd_level">
+                    <h:outputText value="#{m.mainGrnd_level}" />
+                </p:column>
+
+                <p:column headerText="visibility">
+                    <h:outputText value="#{m.visibility}" />
+                </p:column>
+
+                <p:column headerText="windSpeed">
+                    <h:outputText value="#{m.windSpeed}" />
+                </p:column>
+
+                <p:column headerText="windDeg">
+                    <h:outputText value="#{m.windDeg}" />
+                </p:column>
+
+                <p:column headerText="windGust">
+                    <h:outputText value="#{m.windGust}" />
+                </p:column>
+
+                <p:column headerText="cloudsAll">
+                    <h:outputText value="#{m.cloudsAll}" />
+                </p:column>
+
+                <p:column headerText="rain1h">
+                    <h:outputText value="#{m.rain1h}" />
+                </p:column>
+
+                <p:column headerText="rain3h">
+                    <h:outputText value="#{m.rain3h}" />
+                </p:column>
+
+                <p:column headerText="snow1h">
+                    <h:outputText value="#{m.snow1h}" />
+                </p:column>
+
+                <p:column headerText="snow3h">
+                    <h:outputText value="#{m.snow3h}" />
+                </p:column>
+
+                <p:column headerText="sysType">
+                    <h:outputText value="#{m.sysType}" />
+                </p:column>
+
+                <p:column headerText="sysId">
+                    <h:outputText value="#{m.sysId}" />
+                </p:column>
+
+                <p:column headerText="sysMessage">
+                    <h:outputText value="#{m.sysMessage}" />
+                </p:column>
+
+                <p:column headerText="sysCountry">
+                    <h:outputText value="#{m.sysCountry}" />
+                </p:column>
+
+                <p:column headerText="sysSunrise">
+                    <h:outputText value="#{m.sysSunrise}" />
+                </p:column>
+
+                <p:column headerText="sysSunset">
+                    <h:outputText value="#{m.sysSunset}" />
+                </p:column>
+
+                <p:column headerText="timezone">
+                    <h:outputText value="#{m.timezone}" />
+                </p:column>
+
+                <p:column headerText="cityId">
+                    <h:outputText value="#{m.cityId}" />
+                </p:column>
+
+                <p:column headerText="cityName">
+                    <h:outputText value="#{m.cityName}" />
+                </p:column>
+
+                <p:column headerText="cod">
+                    <h:outputText value="#{m.cod}" />
+                </p:column>
+            </p:dataTable>
+            <br/>
+        </h:form>
+    </h:body>
+</html>
+

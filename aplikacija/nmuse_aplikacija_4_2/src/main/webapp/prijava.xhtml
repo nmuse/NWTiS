@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      >
+    <h:head>
+        <title>Prijava</title>
+    </h:head>
+    <h:body>
+        <h1>Prijava</h1>
+
+        <h:form id="formaPrijava">
+            <h:outputText value="Korisničko ime:" />
+            <p:inputText id="korisnik" value="#{prijavaZrno.korisnik}"></p:inputText>
+            <br/>
+            <h:outputText value="Lozinka:" />
+            <p:password id="lozinka" value="#{prijavaZrno.lozinka}" feedback="false"></p:password>
+            <br/>
+            <p:commandButton id="prijavaGumb" value="Prijavi se" update="formaPrijava" ajax="true" action="#{prijavaZrno.prijaviKorisnika}" >
+            </p:commandButton>
+        </h:form>
+
+    </h:body>
+</html>
+

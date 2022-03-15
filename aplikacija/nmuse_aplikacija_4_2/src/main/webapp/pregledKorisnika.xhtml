@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Pregled korisnika</title>
+
+    </h:head>
+    <h:body>
+        <h1>Pregled korisnika</h1>
+        <ul>
+            <li><h:link value="Izbornik" outcome="faces/izbornik.xhtml"/></li>
+        </ul>
+
+        <h:form>
+            <p:dataTable id="tablicaKorisnika"
+                         var="k"
+                         value="#{pregledKorisnika.listaKorisnika}" 
+                         rows="10"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                         rowsPerPageTemplate="5,10,{ShowAll|'All'}"
+                         resizableColumns="true" 
+                         resizeMode="expand" 
+                         showGridlines="true"
+                         filteredValue="#{pregledKorisnika.filtriranaLista}">
+                <p:column headerText="Korisničko ime" filterBy="#{k.korisnik}" sortBy="#{k.korisnik}">
+                    <h:outputText value="#{k.korisnik}" />
+                </p:column>
+                <p:column headerText="Prezime" filterBy="#{k.prezime}" sortBy="#{k.prezime}">
+                    <h:outputText value="#{k.prezime}" />
+                </p:column>
+                <p:column headerText="Ime" filterBy="#{k.ime}" sortBy="#{k.ime}">
+                    <h:outputText value="#{k.ime}" />
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </h:body>
+</html>
+
